@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { AM_CHARACTERS_URL } = require("./utils/const");
+const { AM_CHARACTERS_URL } = require("../utils/const");
 
 const createMbtiAxiosInstance = () => {
   const instance = axios.create({
