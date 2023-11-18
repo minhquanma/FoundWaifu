@@ -3,13 +3,22 @@ const { createJikanAxiosInstance } = require("../services/jikan.http-service");
 const jikanClient = createJikanAxiosInstance();
 
 const getAnimeSearch = (params) => {
-  jikanClient
+  return jikanClient
     .get("/anime", {
       params,
     })
-    .then((res) => console.log(res.data[0]));
+    .then((res) => res.data);
+};
+
+const getCharactersSearch = (params) => {
+  return jikanClient
+    .get("/characters", {
+      params,
+    })
+    .then((res) => res.data);
 };
 
 module.exports = {
   getAnimeSearch,
+  getCharactersSearch,
 };
