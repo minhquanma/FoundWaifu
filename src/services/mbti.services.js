@@ -18,23 +18,44 @@ const getCharacterById = (id) => {
   });
 };
 
-const searchCharacter = ({ name }) => {
+const getCharacterByMbti = (mbti) => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database("datafile.sqlite");
 
-    const query = `SELECT DISTINCT * FROM CHARACTER WHERE ID = ?`;
+    const query = `SELECT DISTINCT * FROM CHARACTER WHERE PERSONALITYTYPE LIKE ?`;
 
-    db.all(query, [id], (err, rows) => {
+    db.all(query, [mbti], (err, rows) => {
       if (err) {
         throw err;
       }
-      resolve(rows[0]);
+      resolve(rows);
     });
 
     // close the database connection
     db.close();
   });
 };
+
+const searchCharacter = ({ name }) => {
+  return new Promise((resolve, reject) => {
+    const db = new sqlite3.Database("datafile.sqlite");
+
+    const query = `SELECT DISTINCT * FROM CHARACTER WHERE NAME LIKE ?`;
+
+    db.all(query, [`%${name}`], (err, rows) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(rows);
+    });
+
+    // close the database connection
+    db.close();
+  });
+};
+
 module.exports = {
   getCharacterById,
+  getCharacterByMbti,
+  searchCharacter,
 };

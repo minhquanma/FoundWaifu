@@ -3,6 +3,7 @@ const cors = require("cors");
 const {
   getCharacterByIdApi,
   searchBarApi,
+  getCharactersByMbtiApi,
 } = require("./controllers/mbti-controller");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(
   })
 );
 
+app.get("/mbti/:mbti", getCharactersByMbtiApi);
 app.get("/characters/:id", getCharacterByIdApi);
 app.get("/search-bar", searchBarApi);
 

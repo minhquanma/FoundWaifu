@@ -13,12 +13,12 @@ async function runCrawler() {
 
   const characters = [];
 
-  // Fetch all characters of each anime 
+  // Fetch all characters of each anime
   for (const item of animes.slice(0, 5)) {
     const character = await fetchCharactersBySubCatId(item.sub_cat_id);
 
     characters.push(...character.profiles);
   }
-=
+
   await insertAllCharacters(characters);
 }

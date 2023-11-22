@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "crawler": "node src/crawler.js",
-    "dev": "node src/index",
+    "dev": "nodemon src/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,5 +17,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.13.0",
     "sqlite3": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
