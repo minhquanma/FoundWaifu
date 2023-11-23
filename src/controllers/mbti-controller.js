@@ -22,9 +22,14 @@ const getCharactersByMbtiApi = async (req, res) => {
   try {
     const result = await getCharacterByMbti(mbti);
     if (result) {
-      // TODO: return random 4 items with the most voteCount
+      const sortedResults = result.sort((a, b) => b.voteCount - a.voteCount);
+
+      const selectedResults = sortedResults.slice(0, 4);
+
+      res.send(selectedResults);
+    } else {
+      res.send(result);
     }
-    res.send(result);
   } catch (err) {
     res.send(err);
   }
