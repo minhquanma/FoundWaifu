@@ -23,10 +23,21 @@ const getCharactersByMbtiApi = async (req, res) => {
     const result = await getCharacterByMbti(mbti);
     if (result) {
       const sortedResults = result.sort((a, b) => b.voteCount - a.voteCount);
+      const selectedResults = sortedResults.slice(0, 20);
 
-      const selectedResults = sortedResults.slice(0, 4);
+      const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+      const selectedSet = new Set();
 
-      res.send(selectedResults);
+      const randomedResults = Array.from({ length: 4 }, () => {
+        let randomElement;
+        do {
+          randomElement = getRandomElement(selectedResults);
+        } while (selectedSet.has(randomElement));
+        selectedSet.add(randomElement);
+        return randomElement;
+      });
+
+      res.send(randomedResults);
     } else {
       res.send(result);
     }
