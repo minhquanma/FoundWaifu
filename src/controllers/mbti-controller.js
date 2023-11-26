@@ -16,38 +16,46 @@ const getCharacterByIdApi = async (req, res) => {
   }
 };
 
-const getCharactersByMbtiApi = async (req, res) => {
+const createRandomSet = (inputSet, length) => {
+  const randomizedIndex = Math.floor((Math.random() * 100) % 20);
+
+  inputSet.add(randomizedIndex);
+
+  if (inputSet.size < length) {
+    createRandomSet(inputSet, length);
+  }
+
+  return inputSet;
+};
+
+const getSuggestedCharsApi = async (req, res) => {
   const mbti = req.params.mbti;
 
   try {
-    const result = await getCharacterByMbti(mbti);
-    if (result) {
-      const sortedResults = result.sort((a, b) => b.voteCount - a.voteCount);
-      const selectedResults = sortedResults.slice(0, 20);
+    const characters = await getCharacterByMbti(mbti);
+    if (characters) {
+      const selectedResults = characters.slice(0, 20);
+      const randomSet = createRandomSet(new Set(), 4);
+      const results = [...randomSet].map((index) => selectedResults[index]);
 
-      const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
-      const selectedSet = new Set();
-
-      const randomedResults = Array.from({ length: 4 }, () => {
-        let randomElement;
-        do {
-          randomElement = getRandomElement(selectedResults);
-        } while (selectedSet.has(randomElement));
-        selectedSet.add(randomElement);
-        return randomElement;
-      });
-
-      res.send(randomedResults);
+      res.send(results);
     } else {
-      res.send(result);
+      res.send(characters);
     }
   } catch (err) {
     res.send(err);
   }
 };
 
-const getRecommmendationApi = async (req, res) => {
-  const mbti = req.query.mbti;
+const getCharacterByMbtiApi = async (req, res) => {
+  const mbti = req.params.mbti;
+
+  try {
+    const characters = await getCharacterByMbti(mbti);
+    res.send(characters);
+  } catch (err) {
+    res.send(err);
+  }
 };
 
 const searchBarApi = async (req, res) => {
@@ -67,7 +75,7 @@ const searchBarApi = async (req, res) => {
 
 module.exports = {
   getCharacterByIdApi,
-  getCharactersByMbtiApi,
-  getRecommmendationApi,
+  getSuggestedCharsApi,
+  getCharacterByMbtiApi,
   searchBarApi,
 };

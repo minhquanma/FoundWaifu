@@ -22,7 +22,10 @@ const getCharacterByMbti = (mbti) => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database("datafile.sqlite");
 
-    const query = `SELECT DISTINCT * FROM CHARACTER WHERE PERSONALITYTYPE LIKE ?`;
+    const query = `SELECT DISTINCT * 
+                  FROM CHARACTER
+                  WHERE PERSONALITYTYPE LIKE ?
+                  ORDER BY VOTECOUNT DESC`;
 
     db.all(query, [mbti], (err, rows) => {
       if (err) {

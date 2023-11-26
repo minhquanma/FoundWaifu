@@ -3,7 +3,8 @@ const cors = require("cors");
 const {
   getCharacterByIdApi,
   searchBarApi,
-  getCharactersByMbtiApi,
+  getSuggestedCharsApi,
+  getCharacterByMbtiApi,
 } = require("./controllers/mbti-controller");
 
 const app = express();
@@ -16,8 +17,9 @@ app.use(
   })
 );
 
-app.get("/mbti/:mbti", getCharactersByMbtiApi);
+app.get("/suggested/:mbti", getSuggestedCharsApi);
 app.get("/characters/:id", getCharacterByIdApi);
+app.get("/characters-by-mbti/:mbti", getCharacterByMbtiApi);
 app.get("/search-bar", searchBarApi);
 
 app.listen(8080, () => console.log(`Server listening on port: 8080`));

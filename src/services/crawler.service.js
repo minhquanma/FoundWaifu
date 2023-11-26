@@ -51,11 +51,8 @@ const insertAllCharacters = (characters) => {
     const db = new sqlite3.Database("datafile.sqlite");
     db.serialize(() => {
       console.log(`Start inserting ${characters.length} records`);
-      // WARNING: Drop table before inserting, to prevent duplicate data
-      db.run("DROP TABLE IF EXISTS CHARACTER");
-
       db.run(
-        `CREATE TABLE CHARACTER (
+        `CREATE TABLE IF NOT EXISTS CHARACTER (
           id NUM PRIMARY KEY,
           personalityType TEXT,
           name TEXT, 
@@ -70,7 +67,6 @@ const insertAllCharacters = (characters) => {
       );
 
       for (const character of characters) {
-        console.log(character);
         stmt.run(
           character.profile_id,
           // Only get the first 4 characters of personality type (XXXX type)
