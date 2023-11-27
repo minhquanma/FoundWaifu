@@ -18,6 +18,23 @@ const getCharacterById = (id) => {
   });
 };
 
+const getCharacterByAnimeId = (id) => {
+  return new Promise((resolve, reject) => {
+    const db = new sqlite3.Database("datafile.sqlite");
+
+    const query = `SELECT DISTINCT * FROM CHARACTER WHERE ANIMEID = ?`;
+    
+    db.all(query, [id], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      resolve(rows);
+    });
+
+    db.close();
+  });
+};
+
 const getCharacterByMbti = (mbti) => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database("datafile.sqlite");
@@ -61,4 +78,5 @@ module.exports = {
   getCharacterById,
   getCharacterByMbti,
   searchCharacter,
+  getCharacterByAnimeId
 };

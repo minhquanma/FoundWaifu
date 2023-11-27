@@ -3,6 +3,7 @@ const {
   getCharacterById,
   searchCharacter,
   getCharacterByMbti,
+  getCharacterByAnimeId,
 } = require("../services/mbti.services");
 
 const getCharacterByIdApi = async (req, res) => {
@@ -47,6 +48,17 @@ const getSuggestedCharsApi = async (req, res) => {
   }
 };
 
+const getCharacterByAnimeIdApi = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const result = await getCharacterByAnimeId(id);
+    res.send(result);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
 const getCharacterByMbtiApi = async (req, res) => {
   const mbti = req.params.mbti;
 
@@ -76,6 +88,7 @@ const searchBarApi = async (req, res) => {
 module.exports = {
   getCharacterByIdApi,
   getSuggestedCharsApi,
+  getCharacterByAnimeIdApi,
   getCharacterByMbtiApi,
   searchBarApi,
 };

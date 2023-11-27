@@ -4,6 +4,7 @@ const {
   getCharacterByIdApi,
   searchBarApi,
   getSuggestedCharsApi,
+  getCharacterByAnimeIdApi,
   getCharacterByMbtiApi,
 } = require("./controllers/mbti-controller");
 
@@ -19,6 +20,7 @@ app.use(
 
 app.get("/suggested/:mbti", getSuggestedCharsApi);
 app.get("/characters/:id", getCharacterByIdApi);
+app.get("/related-characters/:id", getCharacterByAnimeIdApi);
 app.get("/characters-by-mbti/:mbti", getCharacterByMbtiApi);
 app.get("/search-bar", searchBarApi);
 
