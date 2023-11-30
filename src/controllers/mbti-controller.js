@@ -17,13 +17,13 @@ const getCharacterByIdApi = async (req, res) => {
   }
 };
 
-const createRandomSet = (inputSet, length) => {
+const createRandomSet = (length, inputSet = new Set()) => {
   const randomizedIndex = Math.floor((Math.random() * 100) % 20);
 
   inputSet.add(randomizedIndex);
 
   if (inputSet.size < length) {
-    createRandomSet(inputSet, length);
+    createRandomSet(length, inputSet);
   }
 
   return inputSet;
@@ -36,7 +36,7 @@ const getSuggestedCharsApi = async (req, res) => {
     const characters = await getCharacterByMbti(mbti);
     if (characters) {
       const selectedResults = characters.slice(0, 20);
-      const randomSet = createRandomSet(new Set(), 4);
+      const randomSet = createRandomSet(4);
       const results = [...randomSet].map((index) => selectedResults[index]);
 
       res.send(results);
