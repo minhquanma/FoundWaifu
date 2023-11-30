@@ -4,7 +4,12 @@ const getCharacterById = (id) => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database("datafile.sqlite");
 
-    const query = `SELECT DISTINCT * FROM CHARACTER WHERE ID = ?`;
+    // const query = `SELECT CHARACTER.*, ANIME.TITLE 
+    //                 FROM CHARACTER 
+    //                 INNER JOIN ANIME ON CHARACTER.ANIMEID = ANIME.ID 
+    //                 WHERE ID = ?`;
+
+    const query = `SELECT DISTINCT * FROM CHARACTER WHERE ID = ?`
 
     db.all(query, [id], (err, rows) => {
       if (err) {
@@ -18,12 +23,13 @@ const getCharacterById = (id) => {
   });
 };
 
+
 const getCharacterByAnimeId = (id) => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database("datafile.sqlite");
 
     const query = `SELECT DISTINCT * FROM CHARACTER WHERE ANIMEID = ?`;
-    
+
     db.all(query, [id], (err, rows) => {
       if (err) {
         throw err;
@@ -78,5 +84,5 @@ module.exports = {
   getCharacterById,
   getCharacterByMbti,
   searchCharacter,
-  getCharacterByAnimeId
+  getCharacterByAnimeId,
 };
