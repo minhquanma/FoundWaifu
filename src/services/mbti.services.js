@@ -4,15 +4,17 @@ const getCharacterById = (id) => {
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database("datafile.sqlite");
 
-    // const query = `SELECT CHARACTER.*, ANIME.TITLE 
-    //                 FROM CHARACTER 
-    //                 INNER JOIN ANIME ON CHARACTER.ANIMEID = ANIME.ID 
-    //                 WHERE ID = ?`;
+    const query = `SELECT CHARACTER.*, TITLE
+                    FROM CHARACTER
+                    LEFT OUTER JOIN ANIME 
+                    ON CHARACTER.ANIMEID = ANIME.ID 
+                    WHERE CHARACTER.ID = ?`;
 
-    const query = `SELECT DISTINCT * FROM CHARACTER WHERE ID = ?`
+    // const query = `SELECT DISTINCT * FROM CHARACTER WHERE ID = ?`
 
     db.all(query, [id], (err, rows) => {
       if (err) {
+        console.log(err);
         throw err;
       }
       resolve(rows[0]);
@@ -23,6 +25,22 @@ const getCharacterById = (id) => {
   });
 };
 
+const getMutualCharacterByMbti = (mbti) => {
+  return new Promise((resolve, reject) => {
+    const db = new sqlite3.Database("datafile.sqlite");
+
+    const query = `SELECT DISTINCT * FROM CHARACTER WHERE PERSONALITYTYPE IN (${mbti.map(type => `'${type}'`).join(',')}) LIMIT 10`;
+
+    db.all(query, [mbti], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      resolve(rows);
+    });
+
+    db.close();
+  });
+};
 
 const getCharacterByAnimeId = (id) => {
   return new Promise((resolve, reject) => {
@@ -85,4 +103,5 @@ module.exports = {
   getCharacterByMbti,
   searchCharacter,
   getCharacterByAnimeId,
+  getMutualCharacterByMbti
 };

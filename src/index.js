@@ -6,6 +6,7 @@ const {
   getSuggestedCharsApi,
   getCharacterByAnimeIdApi,
   getCharacterByMbtiApi,
+  getMutualCharacterApi
 } = require("./controllers/mbti-controller");
 
 const app = express();
@@ -23,5 +24,6 @@ app.get("/characters/:id", getCharacterByIdApi);
 app.get("/related-characters/:id", getCharacterByAnimeIdApi);
 app.get("/characters-by-mbti/:mbti", getCharacterByMbtiApi);
 app.get("/search-bar", searchBarApi);
+app.get("/mutual-characters/:mbti", getMutualCharacterApi)
 
 app.listen(8080, () => console.log(`Server listening on port: 8080`));

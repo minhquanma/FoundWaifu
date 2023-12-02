@@ -4,6 +4,7 @@ const {
   searchCharacter,
   getCharacterByMbti,
   getCharacterByAnimeId,
+  getMutualCharacterByMbti
 } = require("../services/mbti.services");
 
 const getCharacterByIdApi = async (req, res) => {
@@ -48,6 +49,25 @@ const getSuggestedCharsApi = async (req, res) => {
   }
 };
 
+const getMutualCharacterApi = async (req, res) => {
+  const mbti = req.params.mbti;
+
+  try {
+    const characters = await getCharacterByMbti(mbti);
+    if (characters) {
+      const selectedResults = characters.slice(0, 50);
+      const randomSet = createRandomSet(10);
+      const results = [...randomSet].map((index) => selectedResults[index]);
+
+      res.send(results);
+    } else {
+      res.send(characters);
+    }
+  } catch (err) {
+    res.send(err);
+  } 
+}
+
 const getCharacterByAnimeIdApi = async (req, res) => {
   const id = req.params.id;
 
@@ -91,4 +111,5 @@ module.exports = {
   getCharacterByAnimeIdApi,
   getCharacterByMbtiApi,
   searchBarApi,
+  getMutualCharacterApi
 };
